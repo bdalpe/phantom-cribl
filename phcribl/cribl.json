@@ -1,0 +1,190 @@
+{
+    "appid": "36fbb71a-34bb-402d-96f2-6a90428fe66e",
+    "name": "Cribl",
+    "description": "Cribl LogStream connector for Splunk Phantom",
+    "type": "email",
+    "product_vendor": "Cribl",
+    "logo": "cribl.png",
+    "logo_dark": "cribl_dark.png",
+    "product_name": "LogStream",
+    "python_version": "3",
+    "product_version_regex": ".*",
+    "publisher": "Cribl, Inc.",
+    "license": "Copyright (c) Cribl, Inc., 2020",
+    "app_version": "1.1.0",
+    "utctime_updated": "2020-12-23T00:00:00.000000Z",
+    "package_name": "phantom_cribl",
+    "main_module": "cribl_connector.py",
+    "min_phantom_version": "4.9.34514",
+    "app_wizard_version": "1.0.0",
+    "configuration": {
+        "master_url": {
+            "description": "The full URL of the Cribl LogStream master (e.g. https://master.example.com:9000)",
+            "data_type": "string",
+            "required": true,
+            "value_list": [],
+            "default": "",
+            "order": 0
+        },
+        "worker_group": {
+            "description": "The name of the LogStream worker group (optional)",
+            "data_type": "string",
+            "required": false,
+            "value_list": [],
+            "default": "",
+            "order": 1
+        },
+        "username": {
+            "description": "LogStream Username",
+            "data_type": "string",
+            "required": true,
+            "value_list": [],
+            "default": "",
+            "order": 2
+        },
+        "password": {
+            "description": "LogStream Password",
+            "data_type": "password",
+            "required": true,
+            "order": 3
+        },
+        "verify_server_cert": {
+            "description": "Enable SSL certificate validation?",
+            "data_type": "boolean",
+            "required": false,
+            "default": true,
+            "order": 4
+        }
+    },
+    "actions": [
+        {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "verbose": "",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "run collector job",
+            "identifier": "run_collector_job",
+            "description": "Run collector job",
+            "verbose": "Runs the specified Cribl LogStream collector job to replay logs into a SIEM for analysis",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "collector": {
+                    "description": "The collector identifier",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "filter": {
+                    "description": "JavaScript expression filter",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "earliest": {
+                    "description": "Filter earliest time (e.g. -1h if relative or Epoch Timestamp if absolute)",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "-1h",
+                    "order": 2
+                },
+                "latest": {
+                    "description": "Filter latest time (e.g. now if relative or Epoch Timestamp if absolute)",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "now",
+                    "order": 3
+                },
+                "timeRangeType": {
+                    "description": "Time range type for collector job",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": ["absolute", "relative"],
+                    "default": "relative",
+                    "order": 4
+                },
+                "waitForJobCompletion": {
+                    "description": "Should the playbook wait for the job to complete before proceeding?",
+                    "data_type": "boolean",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "True",
+                    "order": 5
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.collector",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "collector",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.filter",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "filter",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        }
+    ],
+    "pip_dependencies": {
+       "pypi": [
+          {"module": "pyjwt==2.0.0"}
+       ]
+    },
+    "pip3_dependencies": {
+       "pypi": [
+          {"module": "pyjwt==2.0.0"}
+       ]
+    }
+}
